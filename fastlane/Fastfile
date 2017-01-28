@@ -1,0 +1,15 @@
+lane :test_install do  
+  # Installs all Android dependencies
+  install_android
+end
+  
+lane :test_install_sdks do
+  
+  # Installs are Android SDKs
+  install_android_sdks find: "Android SDK Build-tools, revision 23.0.1"
+  install_android_sdks find: "SDK Platform Android 6.0, API 23"
+  install_android_sdks find: "Intel x86 Atom_64 System Image, Android API 23, revision 9"
+  
+  # Install HAXM for running emulator
+  install_android_sdks find: "Intel x86 Emulator Accelerator (HAXM installer)"
+end
