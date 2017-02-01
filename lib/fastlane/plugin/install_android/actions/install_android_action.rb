@@ -2,24 +2,23 @@ module Fastlane
   module Actions
     class InstallAndroidAction < Action
       def self.run(params)
-        UI.message("The install_android plugin is working!")
-
         # TOOD: Prompt for update
 
-        has_java = Helper::InstallAndroidHelper.is_installed?("java")
-        has_javac = Helper::InstallAndroidHelper.is_installed?("javac")
+        has_java = Helper::InstallAndroidHelper.is_installed? "java"
+        has_javac = Helper::InstallAndroidHelper.is_installed? "javac"
 
-        has_ant = Helper::InstallAndroidHelper.is_installed?("ant")
-        has_maven = Helper::InstallAndroidHelper.is_installed?("mvn")
-        has_android = Helper::InstallAndroidHelper.is_installed?("android")
+        has_ant = Helper::InstallAndroidHelper.is_installed? "ant"
+        has_maven = Helper::InstallAndroidHelper.is_installed? "mvn"
+        has_android = Helper::InstallAndroidHelper.is_installed? "android"
         
-        has_brew = Helper::InstallAndroidHelper.is_installed?("brew")
+        has_brew = Helper::InstallAndroidHelper.is_installed? "brew"
         
         missing_dependency = !has_java || !has_javac ||
            !has_ant || !has_maven || !has_android 
         
         if !missing_dependency
           UI.message "All Android dependencies are installed"
+          return
         elsif missing_dependency && !has_brew
           UI.user_error! "Please install homebrew from http://brew.sh/"
         end

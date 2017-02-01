@@ -1,4 +1,5 @@
 require 'fastlane/plugin/install_android/version'
+require 'fastlane/plugin/install_android/commands_generator'
 
 module Fastlane
   module InstallAndroid

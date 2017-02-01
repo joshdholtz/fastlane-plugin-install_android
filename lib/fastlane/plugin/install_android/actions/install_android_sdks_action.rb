@@ -44,30 +44,23 @@ module Fastlane
         filter_out = filter_out.map{ |s| s.downcase }
         
         Bundler.with_clean_env do
-          versions_output = Fastlane::Actions.sh("android list sdk --all", log: false)
-          versions_output = versions_output.split("\n")
-          versions_output = versions_output.map do |line|
-            line.strip
-          end
-          versions_output = versions_output.select do |line|
-            line =~ /^\d*/
-          end
-          versions_output = versions_output.select do |line|
+          sdks = Helper::InstallAndroidHelper.list_sdks
+          sdks = sdks.select do |line|
             line = line.downcase
             filter_in.any? { |word| line.include?(word) }
           end unless filter_in.empty?
-          versions_output = versions_output.select do |line|
+          sdks = sdks.select do |line|
             line = line.downcase
             !filter_out.any? { |word| line.include?(word) }
           end unless filter_out.empty?
-          versions_output = versions_output.map do |line|
+          sdks = sdks.map do |line|
             line_parts = line.split("-")
             number = line_parts.shift
             name = line_parts.join("").strip
             {number: number, name: name}
           end
           
-          questions = versions_output.map{ |v| "#{v[:name]} (#{v[:number]})" }
+          questions = sdks.map{ |v| "#{v[:name]} (#{v[:number]})" }
           
           if questions.count == 1 && auto_install_if_only_result
             index = 0
@@ -79,9 +72,9 @@ module Fastlane
           end
           
           # Install all SDKs
-          # sh "echo \"y\" | android update sdk --all --no-ui --filter #{versions_output[index][:number]}"
+          # sh "echo \"y\" | android update sdk --all --no-ui --filter #{sdks[index][:number]}"
           
-          if versions_output.find { |v| v[:name].downcase.include?("haxm installer") }
+          if sdks.find { |v| v[:name].downcase.include?("haxm installer") }
             UI.important "It appears that you have downloaded/installed 'HAXM' but you will still need to run the 'silent_install.sh'."
             UI.important "Command: `sudo /usr/local/opt/android-sdk/extras/intel/Hardware_Accelerated_Execution_Manager/silent_install.sh` "
             if UI.confirm("Do you want Fastlane to run this command for you?")
