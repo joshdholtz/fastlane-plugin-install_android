@@ -1,5 +1,7 @@
 # install_android plugin
 
+:warning: THIS IS STILL UNDER CONSTRUCTION :warning:
+
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-install_android)
 
 ## Getting Started
